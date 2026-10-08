@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EV PULSE NXT</title>
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#020617,#0f172a,#000);
+color:white;
+overflow-x:hidden;
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:14px 8%;
+border-bottom:1px solid rgba(255,255,255,.1);
+backdrop-filter:blur(10px);
+}
+
+nav h1{
+font-size:30px;
+color:#00e3aa;
+}
+
+.login-btn{
+padding:10px 26px;
+border:none;
+border-radius:12px;
+background:#00e3aa;
+color:#061b1a;
+font-size:16px;
+cursor:pointer;
+transition:.3s;
+}
+
+.login-btn:hover{
+background:#00b38f;
+transform:scale(1.05);
+}
+
+.hero{
+min-height:75vh;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:25px 20px;
+position:relative;
+}
+
+.glow{
+position:absolute;
+width:420px;
+height:420px;
+background:rgba(0,227,170,.22);
+border-radius:50%;
+filter:blur(120px);
+}
+
+.hero-content{
+position:relative;
+z-index:1;
+max-width:850px;
+}
+
+.tag{
+display:inline-block;
+padding:10px 20px;
+border-radius:40px;
+background:rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.1);
+margin-bottom:20px;
+}
+
+.hero h2{
+font-size:55px;
+line-height:1.15;
+margin-bottom:18px;
+}
+
+.hero span{
+color:#00e3aa;
+}
+
+.hero p{
+font-size:18px;
+line-height:1.5;
+color:#cbd5e1;
+margin-bottom:30px;
+}
+
+.buttons{
+
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+
+}
+
+
+
+.btn{
+
+padding:16px 34px;
+border-radius:15px;
+font-size:17px;
+font-weight:bold;
+text-decoration:none;
+transition:.3s;
+
+}
+
+
+
+.primary-btn{
+
+background:#00e3aa;
+color:#061b1a;
+box-shadow:0 0 20px rgba(0,227,170,.35);
+
+}
+
+
+
+.primary-btn:hover{
+
+background:#00b38f;
+transform:translateY(-5px);
+
+}
+
+
+
+.secondary-btn{
+
+border:1px solid rgba(255,255,255,.2);
+color:white;
+
+}
+
+
+
+.secondary-btn:hover{
+background:rgba(255,255,255,.08);
+}
+
+.features{
+padding:50px 8%;
+text-align:center;
+}
+
+.features h2{
+font-size:40px;
+margin-bottom:12px;
+}
+
+.features p{
+color:#94a3b8;
+margin-bottom:35px;
+}
+
+.feature-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:22px;
+}
+
+.card{
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.1);
+border-radius:22px;
+padding:28px 25px;
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-8px);
+}
+
+.icon{
+font-size:45px;
+margin-bottom:15px;
+}
+
+.card h3{
+font-size:22px;
+margin-bottom:10px;
+}
+
+.card p{
+
+color:#cbd5e1;
+
+}
+
+.cta{
+padding:50px 20px;
+text-align:center;
+}
+
+.cta-box{
+max-width:850px;
+margin:auto;
+background:rgba(255,255,255,.05);
+border-radius:30px;
+padding:45px;
+}
+
+.cta h2{
+font-size:40px;
+margin-bottom:15px;
+}
+
+.cta p{
+
+font-size:18px;
+color:#cbd5e1;
+margin-bottom:30px;
+
+}
+
+
+
+
+footer{
+
+padding:20px;
+text-align:center;
+color:#94a3b8;
+border-top:1px solid rgba(255,255,255,.1);
+
+}
+
+
+
+
+
+@media(max-width:768px){
+
+.hero h2{
+
+font-size:40px;
+
+}
+
+
+}
+
+</style>
+
+</head>
+
+
+
+<body>
+
+
+
+<nav>
+
+<h1>⚡ EV PULSE NXT</h1>
+
+
+<a href="/login">
+
+<button class="login-btn">
+
+Login
+
+</button>
+
+</a>
+
+
+</nav>
+
+
+
+
+
+<section class="hero">
+
+
+<div class="glow"></div>
+
+
+<div class="hero-content">
+
+
+<div class="tag">
+
+⚡ AI Powered EV Battery Prediction
+
+</div>
+
+
+
+<h2>
+
+Predict Your 
+<span>EV Battery Life</span>
+
+</h2>
+
+
+
+<p>
+
+Smart AI-powered system that predicts EV battery health,
+charging efficiency, degradation rate and battery life
+using advanced Machine Learning models.
+
+</p>
+
+
+
+<div class="buttons">
+
+
+<a href="/manual"
+class="btn primary-btn">
+
+🔋 Manual Prediction
+
+</a>
+<a href="/upload"
+class="btn secondary-btn">
+📄 Upload EV Report PDF
+</a>
+</div>
+</div>
+
+</section>
+<section class="features">
+<h2>
+Intelligent Features
+</h2>
+
+<p>
+Advanced AI features for smart EV battery monitoring.
+</p>
+
+<div class="feature-grid">
+<div class="card">
+<div class="icon">🔋</div>
+<h3>Battery Health</h3>
+<p>
+Predict degradation and remaining battery life.
+</p>
+</div>
+
+<div class="card">
+<div class="icon">⚡</div>
+<h3>Charging Analytics</h3>
+<p>
+Analyze charging efficiency and performance.
+</p>
+</div>
+
+<div class="card">
+<div class="icon">🤖</div>
+<h3>AI Prediction</h3>
+<p>
+ML powered EV battery prediction engine.
+</p>
+
+</div>
+<div class="card">
+<div class="icon">📄</div>
+<h3>PDF Analysis</h3>
+<p>
+Upload EV reports for automatic prediction.
+</p>
+</div>
+</div>
+</section>
+<section class="cta">
+<div class="cta-box">
+
+<h2>
+Ready to Predict EV Battery Performance?
+</h2>
+<p>
+Optimize your EV battery using intelligent AI insights.
+</p>
+
+<a href="/manual"
+class="btn primary-btn">
+
+Start Predicting ⚡
+</a>
+</div>
+</section>
+<footer>
+© 2026 EV PULSE NXT | AI Powered EV Intelligence Platform
+</footer>
+</body>
+</html>

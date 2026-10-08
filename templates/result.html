@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Result - EV PULSE NXT</title>
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='images/prob.jpg') }}");
+            font-family: 'Segoe UI', sans-serif;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            height: 100%;
+            background-size: cover;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+        h1 {
+            color: #00e3aa;
+            margin-bottom: 25px;
+        }
+        .result-box {
+            background-color: #ffffff10;
+            padding: 30px 40px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            text-align: left;
+        }
+        .result-item {
+            margin: 12px 0;
+            font-size: 16px;
+            color: #ffffff;
+        }
+        .highlight {
+            color: #00e3aa;
+            font-size: 22px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .back-btn {
+            margin-top: 30px;
+            padding: 12px 30px;
+            background-color: #00e3aa;
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .back-btn:hover {
+            background-color: #00b38f;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>EV PULSE NXT - Prediction Result</h1>
+
+    <div class="result-box">
+
+        <div class="result-item"><strong>EV Model:</strong> {{ ev_model }}</div>
+        <div class="result-item"><strong>Battery Type:</strong> {{ battery_type }}</div>
+        <div class="result-item"><strong>Battery Temp (°C):</strong> {{ battery_temp }}</div>
+        <div class="result-item"><strong>Charging Duration (min):</strong> {{ charging_duration }}</div>
+        <div class="result-item"><strong>Degradation Rate (%):</strong> {{ degradation_rate }}</div>
+        <div class="result-item"><strong>Charging Mode:</strong> {{ charging_mode }}</div>
+        <div class="result-item"><strong>Efficiency (%):</strong> {{ efficiency }}</div>
+        <div class="result-item"><strong>Charging Cycles:</strong> {{ charging_cycles }}</div>
+
+        <div class="highlight">
+            🔋 Predicted Battery Life: {{ prediction_text }}
+        </div>
+    </div>
+
+    <form action="{{ url_for('home') }}">
+        <button class="back-btn">⬅ Go Back</button>
+    </form>
+
+</body>
+</html>

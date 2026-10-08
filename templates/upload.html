@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EV Report | EV PULSE NXT</title>
+  <style>
+    :root { color-scheme: dark; --bg:#07111d; --panel:#101e2c; --line:#233548; --muted:#9aafc2; --green:#57e0b2; --blue:#56b7ff; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; padding:36px 18px 56px; color:#f4f8fb; font-family:Arial,sans-serif; background:radial-gradient(ellipse at 50% 0,#173750 0,#07111d 55%); }
+    main { width:min(860px,100%); margin:auto; }
+    a { color:var(--green); text-decoration:none; }
+    .back { display:inline-block; margin:0 0 22px; font-size:14px; }
+    header { margin-bottom:24px; }
+    h1 { margin:0 0 8px; font-size:clamp(28px,5vw,38px); }
+    header p,.muted { color:var(--muted); line-height:1.55; }
+    .panel { padding:24px; margin:18px 0; background:rgba(16,30,44,.94); border:1px solid var(--line); border-radius:18px; box-shadow:0 14px 34px #0003; }
+    form { display:flex; align-items:center; flex-wrap:wrap; gap:12px; }
+    input[type=file] { flex:1 1 250px; padding:12px; border:1px solid var(--line); border-radius:10px; color:#e8f0f6; background:#0a1622; }
+    button { border:0; border-radius:10px; padding:13px 20px; color:#061b1a; font-size:15px; font-weight:700; background:var(--green); cursor:pointer; }
+    button:hover { filter:brightness(1.07); }
+    .error { padding:14px 16px; color:#ffe4ac; background:#45331b; border:1px solid #715325; border-radius:12px; line-height:1.5; }
+    .result-head { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    h2 { margin:0 0 8px; font-size:22px; }
+    .health { color:var(--green); font-size:30px; font-weight:700; }
+    .meter { height:14px; margin:15px 0 7px; overflow:hidden; border-radius:20px; background:#26394b; }
+    .meter span { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#42cba0,#9cf3d5); }
+    .scale { display:flex; justify-content:space-between; color:var(--muted); font-size:12px; }
+    .chart-title { margin:24px 0 14px; font-size:17px; }
+    .bar-row { display:grid; grid-template-columns:minmax(125px, 1fr) minmax(120px, 2fr) auto; align-items:center; gap:12px; margin:14px 0; }
+    .bar-label { color:#dce8f1; font-size:14px; }
+    .bar-track { height:10px; overflow:hidden; border-radius:20px; background:#26394b; }
+    .bar-fill { height:100%; border-radius:inherit; background:linear-gradient(90deg,#328ed2,var(--blue)); }
+    .bar-value { min-width:64px; text-align:right; color:#dce8f1; font-size:13px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; margin-top:16px; }
+    .detail { padding:15px; border:1px solid var(--line); border-radius:12px; background:#0b1723; }
+    .detail span { display:block; color:var(--muted); font-size:13px; margin-bottom:7px; }
+    .detail strong { font-size:16px; overflow-wrap:anywhere; }
+    .overview { margin-top:26px; }
+    .overview ul { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:9px 20px; padding:0; list-style:none; }
+    .overview li { padding:10px 0; border-bottom:1px solid var(--line); color:#dce8f1; }
+    .overview li strong { color:white; }
+    details { margin-top:20px; }
+    summary { color:var(--muted); cursor:pointer; }
+    .preview { max-height:180px; overflow:auto; color:#dce8f1; font-size:13px; line-height:1.6; white-space:normal; }
+    @media(max-width:520px) { .panel{padding:19px}.bar-row{grid-template-columns:1fr auto;gap:7px}.bar-track{grid-column:1/-1;grid-row:2}.bar-value{grid-column:2;grid-row:1} }
+  </style>
+</head>
+<body>
+<main>
+  <a class="back" href="/">← EV PULSE NXT</a>
+  <header>
+    <h1>EV battery report</h1>
+    <p>Upload a diagnostic PDF to estimate battery health and see the details found in your report.</p>
+  </header>
+
+  <section class="panel">
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+      <input type="file" name="pdf" accept=".pdf,application/pdf" required>
+      <button type="submit">Analyze report</button>
+    </form>
+  </section>
+
+  {% if error %}<p class="error" role="status">{{ error }}</p>{% endif %}
+
+  {% if report %}
+  <section class="panel" aria-labelledby="result-title">
+    {% if report.predicted_health is not none %}
+    <div class="result-head">
+      <div><h2 id="result-title">Estimated remaining battery health</h2><p class="muted">Calculated from the degradation rate in your PDF.</p></div>
+      <div class="health">{{ "%.1f"|format(report.predicted_health) }}%</div>
+    </div>
+    <div class="meter" role="img" aria-label="Estimated battery health {{ '%.1f'|format(report.predicted_health) }} percent"><span style="width:{{ report.predicted_health }}%"></span></div>
+    <div class="scale"><span>0%</span><span>100%</span></div>
+    {% endif %}
+
+    {% if report.battery_temp is not none or report.degradation is not none %}
+    <h3 class="chart-title">Report indicators</h3>
+    {% if report.degradation is not none %}
+    <div class="bar-row">
+      <span class="bar-label">Degradation rate</span>
+      <div class="bar-track" role="img" aria-label="Degradation rate {{ report.degradation }} percent"><div class="bar-fill" style="width:{{ [[report.degradation, 0]|max, 100]|min }}%"></div></div>
+      <span class="bar-value">{{ "%.1f"|format(report.degradation) }}%</span>
+    </div>
+    {% endif %}
+    {% if report.battery_temp is not none %}
+    <div class="bar-row">
+      <span class="bar-label">Battery temperature</span>
+      <div class="bar-track" role="img" aria-label="Battery temperature {{ report.battery_temp }} degrees Celsius"><div class="bar-fill" style="width:{{ [[(report.battery_temp / 60 * 100), 0]|max, 100]|min }}%"></div></div>
+      <span class="bar-value">{{ "%.1f"|format(report.battery_temp) }} °C</span>
+    </div>
+    <p class="muted">Temperature bar uses a 0–60 °C display scale.</p>
+    {% endif %}
+    {% endif %}
+
+    <div class="overview">
+      <h2>EV overview</h2>
+      <p class="muted">Details read from {{ report.source_name }}.</p>
+      {% if report.overview %}
+      <div class="grid">
+        {% for item in report.overview %}
+        <div class="detail"><span>{{ item.label }}</span><strong>{{ item.value }}</strong></div>
+        {% endfor %}
+      </div>
+      {% else %}<p class="muted">No standard EV details were recognized. See the readable text from the report below.</p>{% endif %}
+    </div>
+
+    <details><summary>View extracted report text</summary><p class="preview">{{ report.text_preview }}{% if report.text_preview|length >= 700 %}…{% endif %}</p></details>
+  </section>
+  {% endif %}
+</main>
+</body>
+</html>
+
